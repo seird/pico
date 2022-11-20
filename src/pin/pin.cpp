@@ -4,7 +4,7 @@
 Pin::Pin(uint n, bool direction)
 {
     pin = n;
-    this->direction = direction;
+    direction = direction;
 
     gpio_init(n);
     gpio_set_dir(n, direction);

@@ -17,9 +17,9 @@ typedef enum SleepMode {
 typedef struct SleepConfig {
     sleepmode_t mode;                       /**< the desired sleep mode */
 
-    int8_t hours;                           /**< hours between executions */
-    int8_t minutes;                         /**< minutes between executions */
-    int8_t seconds;                         /**< seconds between executions */
+    int8_t hours;                           /**< hours between executions [0-23] */
+    int8_t minutes;                         /**< minutes between executions [0-59] */
+    int8_t seconds;                         /**< seconds between executions [0-59] */
 
     void (* loop_function) (void * arg);    /**< a function that is called every loop after wake */
     void * arg;                             /**< an argument that is passed to the function */

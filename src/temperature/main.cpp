@@ -7,15 +7,6 @@
 #include "temperature.h"
 
 
-/* ----------------------------------------- Parameters ----------------------------------------- */
-#define PIN_TEMPERATURE 0            // Data pin of the DS18B20 sensor
-#define MEASURE_EVERY_S 60           // perform a measurement every X seconds
-#define TEMPERATURE_SMOOTHING 1      // average the last X temperature measurements
-uint8_t writing_address[] = "2Node"; // send the measurement to this address
-#define SYSTEM_FREQUENCY_KHZ 13000   // system frequency (applied if low LOW_POWER is set to true)
-/* ---------------------------------------------------------------------------------------------- */
-
-
 float measurements[TEMPERATURE_SMOOTHING];
 
 Radio radio;
@@ -38,6 +29,7 @@ setup()
     if (!radio.setup(sizeof(float))) {
         return false;
     }
+    uint8_t writing_address[] = WRITING_ADDRESS;
     radio.openWritingPipe(writing_address);
     radio.startListening();
     radio.stopListening();
@@ -76,6 +68,7 @@ loop_function(void * arg)
 #if LOW_POWER
     // The temperature sensor has to be reinitialized every time the pico wakes from sleep
     temperature_sensor.init();
+    temperature_sensor.measure(); // prevent junk
 #endif
     measurements[(*m)++ % TEMPERATURE_SMOOTHING] = temperature_sensor.measure();
 
@@ -112,8 +105,8 @@ main()
 
     sleepconfig_t sleepconfig = {
         .mode = LOW_POWER ? SM_SLEEP : SM_DEFAULT,
-        .hours = 0,
-        .minutes = 0,
+        .hours = MEASURE_EVERY_H,
+        .minutes = MEASURE_EVERY_M,
         .seconds = MEASURE_EVERY_S,
         .loop_function = loop_function,
         .arg = &m, // could use a global variable as well, however `static size_t m = 0;` inside loop_function is always 0??

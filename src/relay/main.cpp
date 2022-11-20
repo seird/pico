@@ -7,17 +7,9 @@
 
 // Node A = temperature sensor
 // Node B = server
-/* ----------------------------------------- Parameters ----------------------------------------- */
-const uint32_t LOOP_SLEEP_MS = 50;
 
-const uint8_t address_read_node_A[6] = "2Node";
-const uint8_t pipe_A = 1;
-const uint8_t address_write_node_B[6] = "3Node";
-const uint8_t pipe_B = 2;
-
-#define SYSTEM_FREQUENCY_KHZ 10000   // system frequency (applied if low LOW_POWER is set to true)
-/* ---------------------------------------------------------------------------------------------- */
-
+const uint8_t address_read_node_A[6] = ADDRESS_READ_A;
+const uint8_t address_write_node_B[6] = ADDRESS_WRITE_B;
 const uint8_t address_write_node_A[6] = "XXXXA"; // We're only passing packets from A to B
 const uint8_t address_read_node_B[6] = "XXXXB"; // We're only passing packets from A to B
 
@@ -36,8 +28,8 @@ radio_init()
         return false;
     }
 
-    radio.openReadingPipe(pipe_A, address_read_node_A);
-    radio.openReadingPipe(pipe_B, address_read_node_B);
+    radio.openReadingPipe(PIPE_A, address_read_node_A);
+    radio.openReadingPipe(PIPE_B, address_read_node_B);
 
     radio.startListening(); // set the radio in RX mode
     
@@ -105,8 +97,8 @@ loop_function(void * arg)
         return;
     }
 
-    // We are only expecting packets on pipe_A or pipe_B (relay between 2 nodes)
-    if (pipe != pipe_A && pipe != pipe_B) {
+    // We are only expecting packets on PIPE_A or PIPE_B (relay between 2 nodes)
+    if (pipe != PIPE_A && pipe != PIPE_B) {
         blink_error = true;
         return;
     }
@@ -115,10 +107,10 @@ loop_function(void * arg)
     // Pipe 1 receives from A --> write to B
     // Pipe 2 receives from B --> write to A
     switch (pipe) {
-        case pipe_A:
+        case PIPE_A:
             radio.openWritingPipe(address_write_node_B);
             break;
-        case pipe_B:
+        case PIPE_B:
             radio.openWritingPipe(address_write_node_A);
             break;
         default:
@@ -158,6 +150,6 @@ main()
 
         loop_function(NULL);
 
-        sleep_ms(LOOP_SLEEP_MS);
+        sleep_ms(INTERVAL_MS);
     }
 }
