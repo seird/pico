@@ -1,8 +1,8 @@
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 
-#include "../pin/pin.h"
-#include "../radio/radio.h"
+#include "utils/pin.h"
+#include "utils/radio.h"
 
 
 // Node A = temperature sensor
@@ -24,7 +24,7 @@ bool blink_traffic = false;
 static bool
 radio_init()
 {
-    if (!radio.setup(sizeof(float))) {
+    if (!radio.setup(PAYLOAD_SIZE)) {
         return false;
     }
 

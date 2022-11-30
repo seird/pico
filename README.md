@@ -1,21 +1,13 @@
-# Remote temperature measurement
+# Pico projects
 
-Measure temperature on a remote location. The measurement is sent with an nrf24l01 transceiver to a server. An intermediate relay node is used to cover more distance.
+## Remote temperature measurement
+
+Measure temperature on a remote location. The measurement is sent with an nrf24l01 transceiver to a server.
 
 Parts:
-- **Temperature measurement**:
-    - pico
-    - nrf24l01+
-    - DS18B20
-- **Relay**:
-    - pico
-    - nrf24l01+
-- **Server**:
-    - raspberry pi
-    - nrf24l01+
-
-
-## Temperature measurement
+- pico
+- nrf24l01+
+- DS18B20
 
 ~1.17mA @ SM_SLEEP
 
@@ -24,6 +16,12 @@ See the [code](src/temperature/main.cpp).
 ![layout](images/temperature.png)
 
 ## Relay
+
+An intermediate relay node can be used to cover more distance.
+
+Parts:
+- pico
+- nrf24l01+
 
 See the [code](src/relay/main.cpp).
 

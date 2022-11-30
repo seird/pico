@@ -1,4 +1,3 @@
-#include "../../modules/pico-onewire/api/one_wire.h"
 #include "temperature.h"
 
 

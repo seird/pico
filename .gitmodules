@@ -1,3 +1,6 @@
-[submodule "modules/pico-onewire"]
-	path = modules/pico-onewire
+[submodule "src/temperature/pico-onewire"]
+	path = src/temperature/pico-onewire
 	url = https://github.com/adamboardman/pico-onewire
+[submodule "src/utils/radio/RF24"]
+	path = src/utils/radio/RF24
+	url = https://github.com/nRF24/RF24

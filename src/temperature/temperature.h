@@ -3,7 +3,7 @@
 
 
 #include <pico/stdlib.h>
-#include "../../modules/pico-onewire/api/one_wire.h"
+#include "pico-onewire/api/one_wire.h"
 
 
 class TemperatureSensor : public One_wire {

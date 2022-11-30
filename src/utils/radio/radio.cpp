@@ -1,4 +1,4 @@
-#include "radio.h"
+#include "utils/radio.h"
 
 #define CE_PIN 14
 #define CSN_PIN 15
@@ -6,7 +6,6 @@
 
 
 Radio::Radio() : RF24(CE_PIN, CSN_PIN) {
-    
 }
 
 
@@ -28,6 +27,22 @@ Radio::setup(uint8_t payload_size)
     failureDetected = 0; 
 
     return true;
+}
+
+
+void
+Radio::pack(uint8_t * packet, uint8_t header, uint8_t * data, uint8_t size_data)
+{
+    *(packet) = header;
+    memcpy(packet + 1, data, size_data);
+}
+
+
+void
+Radio::unpack(uint8_t * header, uint8_t * data, uint8_t size_data, uint8_t * packet)
+{
+    *header = *packet;
+    memcpy(data, packet + 1, size_data);
 }
 
 
@@ -85,13 +100,4 @@ Radio::receive_packets_timeout(uint8_t * packets, uint8_t npackets, uint8_t * pi
         }
     }
     return true;
-}
-
-
-void
-Radio::transmit_temperature(float temperature)
-{
-    powerUp();
-    send_packets((uint8_t *)&temperature, 1);
-    powerDown();
 }

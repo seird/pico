@@ -7,7 +7,7 @@
 #include "hardware/structs/scb.h"
 #include "hardware/pll.h"
 
-#include "sleep.h"
+#include "utils/sleep.h"
 
 
 static void

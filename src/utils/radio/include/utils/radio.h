@@ -15,11 +15,12 @@ class Radio : public RF24 {
         // Radio() : RF24(CE_PIN, CSN_PIN) {};
         Radio();
         bool setup(uint8_t payload_size);
+        void pack(uint8_t * packet, uint8_t header, uint8_t * data, uint8_t size_data);
+        void unpack(uint8_t * header, uint8_t * data, uint8_t size_data, uint8_t * packet);
         void send_packets(uint8_t * packets, uint8_t npackets);
         bool receive_packet(uint8_t * packet, uint8_t * pipe);
         bool receive_packet_timeout(uint8_t * packet, uint8_t * pipe, uint32_t timeout_us);
         bool receive_packets_timeout(uint8_t * packets, uint8_t npackets, uint8_t * pipe, uint32_t timeout_us);
-        void transmit_temperature(float temperature);
 };
 
 

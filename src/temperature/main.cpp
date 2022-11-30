@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <pico/stdlib.h>
 
-#include "../pin/pin.h"
-#include "../radio/radio.h"
-#include "../sleep/sleep.h"
+#include "utils/pin.h"
+#include "utils/radio.h"
+#include "utils/sleep.h"
 #include "temperature.h"
 
 
@@ -26,7 +26,7 @@ setup()
     temperature_sensor.init();
 
     /* Radio */
-    if (!radio.setup(sizeof(float))) {
+    if (!radio.setup(PAYLOAD_SIZE)) {
         return false;
     }
     uint8_t writing_address[] = WRITING_ADDRESS;
@@ -77,7 +77,11 @@ loop_function(void * arg)
     // printf("[m = %3d] %f\n", *m, temperature);
 
     /* transmit the temperature */
-    radio.transmit_temperature(temperature);
+    radio.powerUp();
+    uint8_t packet[PAYLOAD_SIZE];
+    radio.pack(packet, HEADER, (uint8_t *)&temperature, sizeof(temperature));
+    radio.send_packets(packet, 1);
+    radio.powerDown();
 
 #if BLINK_LED
     pin_LED.blink(1, 100);
@@ -94,7 +98,7 @@ main()
             pin_LED.blink(1, 500);
         }
     }
-
+    
     /* fill the measurements array with initial values */
     temperature_sensor.measure();
     float value = temperature_sensor.measure();

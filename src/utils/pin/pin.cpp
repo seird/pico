@@ -1,4 +1,4 @@
-#include "pin.h"
+#include "utils/pin.h"
 
 
 Pin::Pin(uint n, bool direction)
