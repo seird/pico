@@ -26,6 +26,27 @@ Pin::off()
 
 
 void
+Pin::pull_down()
+{
+    gpio_pull_down(pin);
+}
+
+
+void
+Pin::pull_up()
+{
+    gpio_pull_up(pin);
+}
+
+
+bool
+Pin::get()
+{
+    return gpio_get(pin);
+}
+
+
+void
 Pin::blink(int times, uint32_t interval_ms, bool inverted)
 {
     for (int i=0; i<times; ++i) {
