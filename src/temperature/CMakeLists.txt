@@ -13,7 +13,7 @@ target_link_libraries(measure_temperature common sleep radio pin
 target_compile_definitions(measure_temperature PRIVATE
     BLINK_LED=true
     LOW_POWER=true
-    PIN_TEMPERATURE=0           # Data pin of the DS18B20 sensor
+    PIN_TEMPERATURE=17          # Data pin of the DS18B20 sensor
     MEASURE_EVERY_S=0           # perform a measurement every X seconds [0-59]
     MEASURE_EVERY_M=1           # perform a measurement every X minutes [0-59]
     MEASURE_EVERY_H=0           # perform a measurement every X hours [0-23]
