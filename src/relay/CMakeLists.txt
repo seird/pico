@@ -15,6 +15,8 @@ target_compile_definitions(relay PRIVATE
     ADDRESS_WRITE_B="1Node"     # Write to the base station at this address
     PIPE_B=2                    # Writing pipe
     INTERVAL_MS=50              # Execute the relay main loop every X ms
+    PACKET_BURST=10             # send bursts of X packets
+    PACKET_BURST_INTERVAL_MS=20 # time in ms between packets in a single burst
 )
 target_sources(relay PRIVATE
     main.cpp

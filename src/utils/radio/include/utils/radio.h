@@ -17,7 +17,10 @@ class Radio : public RF24 {
         bool setup(uint8_t payload_size);
         void pack(uint8_t * packet, uint8_t header, uint8_t * data, uint8_t size_data);
         void unpack(uint8_t * header, uint8_t * data, uint8_t size_data, uint8_t * packet);
-        void send_packets(uint8_t * packets, uint8_t npackets);
+        bool send_packet(uint8_t * packet);
+        bool send_packet_burst(uint8_t * packet, size_t n, uint32_t interval_ms);
+        bool send_packets(uint8_t * packets, uint8_t npackets);
+        bool send_packets_burst(uint8_t * packets, uint8_t npackets, size_t n, uint32_t interval);
         bool receive_packet(uint8_t * packet, uint8_t * pipe);
         bool receive_packet_timeout(uint8_t * packet, uint8_t * pipe, uint32_t timeout_us);
         bool receive_packets_timeout(uint8_t * packets, uint8_t npackets, uint8_t * pipe, uint32_t timeout_us);

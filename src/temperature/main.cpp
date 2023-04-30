@@ -50,10 +50,28 @@ static float
 average(float * array, size_t size)
 {
     float sum = 0.0f;
-    for (int i=0; i<size; ++i) {
+    for (size_t i=0; i<size; ++i) {
         sum += array[i];
     }
     return sum / size;
+}
+
+
+static void
+transmit_temperature(float temperature)
+{
+    radio.powerUp();
+
+    uint8_t packet[PAYLOAD_SIZE];
+    radio.pack(packet, HEADER, (uint8_t *)&temperature, sizeof(temperature));
+
+#if PACKET_BURST
+    radio.send_packet_burst(packet, PACKET_BURST, PACKET_BURST_INTERVAL_MS);
+#else
+    radio.send_packet(packet);
+#endif
+
+    radio.powerDown();
 }
 
 
@@ -76,12 +94,7 @@ loop_function(void * arg)
     float temperature = average(measurements, TEMPERATURE_SMOOTHING);
     // printf("[m = %3d] %f\n", *m, temperature);
 
-    /* transmit the temperature */
-    radio.powerUp();
-    uint8_t packet[PAYLOAD_SIZE];
-    radio.pack(packet, HEADER, (uint8_t *)&temperature, sizeof(temperature));
-    radio.send_packets(packet, 1);
-    radio.powerDown();
+    transmit_temperature(temperature);
 
 #if BLINK_LED
     pin_LED.blink(1, 100);

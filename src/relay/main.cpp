@@ -97,6 +97,11 @@ loop_function(void * arg)
         return;
     }
 
+#if PACKET_BURST
+    // TODO
+    radio.flush_rx();
+#endif
+
     // We are only expecting packets on PIPE_A or PIPE_B (relay between 2 nodes)
     if (pipe != PIPE_A && pipe != PIPE_B) {
         blink_error = true;
@@ -120,7 +125,12 @@ loop_function(void * arg)
 
     // printf("Received temperature %f on pipe %d\n", *(float *)buffer, pipe);
 
-    radio.send_packets(buffer, 1);
+#if PACKET_BURST
+    radio.send_packet_burst(buffer, PACKET_BURST, PACKET_BURST_INTERVAL_MS);
+#else
+    radio.send_packet(buffer);
+#endif
+
     blink_traffic = true;
     radio.startListening();
 }

@@ -46,14 +46,70 @@ Radio::unpack(uint8_t * header, uint8_t * data, uint8_t size_data, uint8_t * pac
 }
 
 
-void
-Radio::send_packets(uint8_t * packets, uint8_t npackets)
+bool
+Radio::send_packet(uint8_t * packet)
 {
     stopListening();
     uint8_t packet_size = getPayloadSize();
+    return write(packet, packet_size);
+}
+
+
+bool
+Radio::send_packets(uint8_t * packets, uint8_t npackets)
+{
+    stopListening();
+    bool success = true;
+    uint8_t packet_size = getPayloadSize();
     for (uint8_t i=0; i<npackets; ++i) {
-        write(packets + i*packet_size, packet_size);
+        success &= write(packets + i*packet_size, packet_size);
     }
+    return success;
+}
+
+
+/**
+ * @brief Send a packet, but repeat the packet n times spaced interval_ms ms
+ * 
+ * @param packet 
+ * @param n             Number of times to repeat the sequence of packets
+ * @param interval_ms   Interval in ms between
+ */
+bool
+Radio::send_packet_burst(uint8_t * packet, size_t n, uint32_t interval_ms)
+{
+    bool success = true;
+    while (n--) {
+        success &= send_packet(packet);
+        if (n) {
+            // only sleep between packets, not after the last packet
+            sleep_ms(interval_ms);
+        }
+    }
+    return success;
+}
+
+
+/**
+ * @brief Send a sequence of packets, but repeat the sequence n times spaced interval_ms ms
+ * 
+ * @param packets 
+ * @param npackets 
+ * @param n             Number of times to repeat the sequence of packets
+ * @param interval_ms   Interval in ms between  
+ */
+bool
+Radio::send_packets_burst(uint8_t * packets, uint8_t npackets, size_t n, uint32_t interval_ms)
+{
+    bool success = true;
+    while (n--) {
+        success &= send_packets(packets, npackets);
+        if (n) {
+            // only sleep between packets, not after the last packet
+            sleep_ms(interval_ms);
+        }
+    }
+    return success;
 }
 
 
