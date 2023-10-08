@@ -13,6 +13,12 @@ class Pin {
         Pin(uint n, bool direction);
         void on();
         void off();
+        void set(bool state);
+
+        /**
+         * @brief Toggle a pin. Returns the new state of the pin.
+         */
+        bool toggle();
         void pull_down();
         void pull_up();
         bool get();

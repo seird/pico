@@ -11,7 +11,6 @@ pico_sdk_init()
 
 add_library(common INTERFACE)
 target_compile_definitions(common INTERFACE
-    PAYLOAD_SIZE=5 # Header (1) + Data (4)
 )
 
 add_subdirectory(src)

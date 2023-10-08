@@ -7,6 +7,7 @@ target_link_libraries(relay common radio pin
 )
 target_compile_definitions(relay PRIVATE
     BLINK_CORE=true
+    PAYLOAD_SIZE=5 # Header (1) + Data (4)
     HANDLE_RADIO_FAILURES=true
     LOW_POWER=false
     SYSTEM_FREQUENCY_KHZ=13000  # system frequency (applied if low LOW_POWER is set to true)

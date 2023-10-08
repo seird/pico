@@ -26,6 +26,25 @@ Pin::off()
 
 
 void
+Pin::set(bool state)
+{
+    if (state)
+        on();
+    else
+        off();
+}
+
+
+bool
+Pin::toggle()
+{
+    bool state = get(); // current state
+    set(!state);
+    return !state;
+}
+
+
+void
 Pin::pull_down()
 {
     gpio_pull_down(pin);
@@ -64,8 +83,6 @@ Pin::blink(int times, uint32_t interval_ms, bool inverted)
             off();
         }
 
-        if (i < (times-1)) {
-            sleep_ms(interval_ms);
-        }
+        sleep_ms(interval_ms);
     }
 }
