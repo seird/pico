@@ -19,6 +19,15 @@ class Pin {
          * @brief Toggle a pin. Returns the new state of the pin.
          */
         bool toggle();
+        /**
+         * @brief 
+         * 
+         * @param high 
+         * @param duration pulse duration in microseconds
+         * @param pre !high level duration before the pulse in microseconds
+         * @param post !high level duration after the pulse in microseconds
+         */
+        void pulse(bool high, uint64_t duration, uint64_t pre = 0, uint64_t post = 0);
         void pull_down();
         void pull_up();
         bool get();

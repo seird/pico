@@ -1,5 +1,9 @@
 add_subdirectory(utils)
 
+add_subdirectory(cdc-inout)
+add_subdirectory(cdc-nrf)
+add_subdirectory(cdc-sensors)
+add_subdirectory(cdc-temperature)
 add_subdirectory(hid-inout)
 add_subdirectory(relay)
 add_subdirectory(relay-switch)

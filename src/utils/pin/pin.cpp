@@ -45,6 +45,37 @@ Pin::toggle()
 
 
 void
+Pin::pulse(bool high, uint64_t duration, uint64_t pre, uint64_t post)
+{
+    // -- blink
+    //
+    // high = true
+    //  pre     duration    post
+    //        ____________
+    //        |          |  
+    // _______|          |________
+    //
+    //
+    // high = false
+    //
+    //  pre     duration    post
+    // ________          _________
+    //        |          |
+    //        |__________|
+    //
+    //
+
+    set(!high);
+    sleep_us(pre);
+    set(high);
+    sleep_us(duration);
+    set(!high);
+    sleep_us(post);
+    
+}
+
+
+void
 Pin::pull_down()
 {
     gpio_pull_down(pin);

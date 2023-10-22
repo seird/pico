@@ -4,3 +4,12 @@
 [submodule "src/utils/radio/RF24"]
 	path = src/utils/radio/RF24
 	url = https://github.com/nRF24/RF24
+[submodule "src/cdc-temperature/pico-onewire"]
+	path = src/cdc-temperature/pico-onewire
+	url = https://github.com/adamboardman/pico-onewire
+[submodule "pico-sdk"]
+	path = pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk
+[submodule "pico-extras"]
+	path = pico-extras
+	url = https://github.com/raspberrypi/pico-extras
