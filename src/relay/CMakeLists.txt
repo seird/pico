@@ -2,7 +2,7 @@
 # -------------------- relay --------------------
 # -----------------------------------------------
 add_executable(relay)
-target_link_libraries(relay common radio pin
+target_link_libraries(relay radio pin
     pico_multicore
 )
 target_compile_definitions(relay PRIVATE

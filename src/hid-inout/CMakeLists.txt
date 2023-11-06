@@ -4,7 +4,7 @@
 add_executable(hid-inout)
 
 
-target_link_libraries(hid-inout common 
+target_link_libraries(hid-inout 
     pico_stdlib tinyusb_device tinyusb_board
 )
 target_compile_definitions(hid-inout PRIVATE

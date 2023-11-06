@@ -69,7 +69,8 @@ Radio::send_packets(uint8_t * packets, uint8_t npackets)
 
 
 /**
- * @brief Send a packet, but repeat the packet n times spaced interval_ms ms
+ * @brief Send a packet, but repeat the packet n times spaced interval_ms ms.
+ *        The transmission is aborted as soon as 'write' is successful, i.e. when the ACK packet is received
  * 
  * @param packet 
  * @param n             Number of times to repeat the sequence of packets
@@ -78,21 +79,25 @@ Radio::send_packets(uint8_t * packets, uint8_t npackets)
 bool
 Radio::send_packet_burst(uint8_t * packet, size_t n, uint32_t interval_ms)
 {
-    bool success = true;
+    stopListening();
+    uint8_t packet_size = getPayloadSize();
+
     while (n--) {
-        success &= send_packet(packet);
+        if (write(packet, packet_size))
+            return true;
         if (n) {
             // only sleep between packets, not after the last packet
             sleep_ms(interval_ms);
         }
     }
-    return success;
+    return false;
 }
 
 
 /**
  * @brief Send a sequence of packets, but repeat the sequence n times spaced interval_ms ms
- * 
+ *        The transmission is aborted as soon as 'write' is successful, i.e. when the ACK packet is received
+ *  
  * @param packets 
  * @param npackets 
  * @param n             Number of times to repeat the sequence of packets
@@ -101,15 +106,15 @@ Radio::send_packet_burst(uint8_t * packet, size_t n, uint32_t interval_ms)
 bool
 Radio::send_packets_burst(uint8_t * packets, uint8_t npackets, size_t n, uint32_t interval_ms)
 {
-    bool success = true;
     while (n--) {
-        success &= send_packets(packets, npackets);
+        if (send_packets(packets, npackets))
+            return true;
         if (n) {
             // only sleep between packets, not after the last packet
             sleep_ms(interval_ms);
         }
     }
-    return success;
+    return false;
 }
 
 

@@ -5,7 +5,7 @@ add_executable(measure_temperature)
 
 add_subdirectory(pico-onewire)
 
-target_link_libraries(measure_temperature common sleep radio pin
+target_link_libraries(measure_temperature sleep radio pin
     hardware_irq
     hardware_i2c
     pico_one_wire

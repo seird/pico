@@ -4,7 +4,7 @@
 add_executable(relay_receiver)
 
 
-target_link_libraries(relay_receiver common sleep radio pin
+target_link_libraries(relay_receiver relay-switch-common sleep radio pin
     hardware_adc
 )
 target_compile_definitions(relay_receiver PRIVATE
@@ -12,9 +12,9 @@ target_compile_definitions(relay_receiver PRIVATE
     PAYLOAD_SIZE=1
     PIN_RELAY=0
     LOW_POWER=false
-    SYSTEM_FREQUENCY_KHZ=25000  # system frequency (applied if low LOW_POWER is set to true)
-    PIPE_READ=1                    # Reading pipe
-    ADDRESS_READ="2Node"        # Read from the sensor at this address
+    SYSTEM_FREQUENCY_KHZ=25000   # system frequency (applied if low LOW_POWER is set to true)
+    PIPE_READ=1                  # Reading pipe
+    ADDRESS_READ=ADRESS_TR_TO_RX # Read from the sensor at this address
 )
 target_sources(relay_receiver PRIVATE
     main.cpp

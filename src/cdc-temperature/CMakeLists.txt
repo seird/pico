@@ -3,7 +3,7 @@
 # -----------------------------------------------
 add_executable(cdc-temperature)
 
-target_link_libraries(cdc-temperature common 
+target_link_libraries(cdc-temperature 
     pico_stdlib tinyusb_device tinyusb_board pico_one_wire hardware_irq hardware_i2c
 )
 target_compile_definitions(cdc-temperature PRIVATE

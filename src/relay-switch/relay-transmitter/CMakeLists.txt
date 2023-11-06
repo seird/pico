@@ -4,16 +4,17 @@
 add_executable(relay_transmitter)
 
 
-target_link_libraries(relay_transmitter common sleep radio pin
+target_link_libraries(relay_transmitter relay-switch-common sleep radio pin
     hardware_adc
 )
 target_compile_definitions(relay_transmitter PRIVATE
+    BURST=true
     BLINK_LED=true
     PAYLOAD_SIZE=1
     LOW_POWER=true
-    PIN_BTN=17                  # Button pin
-    SYSTEM_FREQUENCY_KHZ=13000  # system frequency (applied if low LOW_POWER is set to true)
-    WRITING_ADDRESS="2Node"     # send the measurement to this address
+    PIN_BTN=17                      # Button pin
+    SYSTEM_FREQUENCY_KHZ=25000      # system frequency (applied if low LOW_POWER is set to true)
+    WRITING_ADDRESS=ADRESS_TR_TO_RX # send the measurement to this address
 )
 target_sources(relay_transmitter PRIVATE
     main.cpp

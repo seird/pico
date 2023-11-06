@@ -45,16 +45,24 @@ transmit_command(Command cmd)
 {
     radio.powerUp();
 
+#if BURST
+    radio.send_packet_burst((uint8_t *)&cmd, BURST_N, BURST_INTERVAL_MS);
+#else
     radio.send_packet((uint8_t *)&cmd);
+#endif
 
     radio.powerDown();
 }
+
 
 static void
 loop_function(void * arg)
 {
     (void) arg;
 
+#if BLINK_LED
+    pin_LED.blink(1, 20);
+#endif
     transmit_command(CMD_TOGGLE);
 #if BLINK_LED
     pin_LED.blink(1, 200);
@@ -81,11 +89,6 @@ main()
     };
 
     sleep_run(&sleepconfig);
-
-    // while(true) {
-    //     loop_function(NULL);
-    //     sleep_ms(10);
-    // }
 
     return 0;
 }

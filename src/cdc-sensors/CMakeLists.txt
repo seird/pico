@@ -4,7 +4,7 @@
 add_executable(cdc-sensors)
 
 
-target_link_libraries(cdc-sensors common pin
+target_link_libraries(cdc-sensors pin
     pico_stdlib pico_multicore hardware_adc tinyusb_device tinyusb_board
 )
 target_compile_definitions(cdc-sensors PRIVATE

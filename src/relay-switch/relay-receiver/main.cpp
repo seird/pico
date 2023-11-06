@@ -10,6 +10,7 @@
 Radio radio;
 Pin pin_LED(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 Pin pin_relay(PIN_RELAY, GPIO_OUT);
+long last_received = 0;
 
 
 const uint8_t address_read_node[6] = ADDRESS_READ;
@@ -63,9 +64,12 @@ loop_function(void * arg)
     uint8_t pipe;
 
     // Check for a new packet
-    if (!radio.receive_packet(buffer, &pipe)) {
+    // Ignore packets that are within a burst window after the last received packet
+    // 50ms ~~ max time to send packet 60/70ms
+    if (!radio.receive_packet(buffer, &pipe) || (millis() < (BURST_N * (BURST_INTERVAL_MS + 50) + last_received))) {
         return;
     }
+    last_received = millis();
 
     Command cmd = *(Command *)buffer;
 

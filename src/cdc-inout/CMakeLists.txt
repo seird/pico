@@ -4,7 +4,7 @@
 add_executable(cdc-inout)
 
 
-target_link_libraries(cdc-inout common 
+target_link_libraries(cdc-inout 
     pico_stdlib tinyusb_device tinyusb_board
 )
 target_compile_definitions(cdc-inout PRIVATE
