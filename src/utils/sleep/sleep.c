@@ -57,7 +57,7 @@ go_to_sleep(sleepconfig_t * cfg)
 void
 sleep_run(sleepconfig_t * cfg)
 {
-    cfg->_t_start = {
+    cfg->_t_start = (datetime_t){
         .year  = 2021,
         .month = 05,
         .day   = 01,
@@ -66,7 +66,7 @@ sleep_run(sleepconfig_t * cfg)
         .min   = 00,
         .sec   = 00,
     };
-    cfg->_t_end = {
+    cfg->_t_end = (datetime_t){
         .year  = 2021,
         .month = 05,
         .day   = 01,

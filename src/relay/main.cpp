@@ -1,8 +1,8 @@
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 
-#include "utils/pin.h"
-#include "utils/radio.h"
+#include "utils/pin.hpp"
+#include "utils/radio.hpp"
 
 
 // Node A = temperature sensor

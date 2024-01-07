@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <pico/stdlib.h>
 
-#include "utils/pin.h"
-#include "utils/radio.h"
+#include "utils/pin.hpp"
+#include "utils/radio.hpp"
 #include "utils/sleep.h"
 #include "commands.h"
 

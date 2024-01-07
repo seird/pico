@@ -2,7 +2,12 @@
 #define __SLEEP_H__
 
 
-#include "pico/stdlib.h"
+#include <pico/stdlib.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 /** Available sleep modes */
@@ -40,6 +45,11 @@ typedef struct SleepConfig {
  * @param cfg 
  */
 void sleep_run(sleepconfig_t * cfg);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // __SLEEP_H__

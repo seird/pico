@@ -1,3 +1,7 @@
+add_subdirectory(crypto)
 add_subdirectory(pin)
 add_subdirectory(radio)
 add_subdirectory(sleep)
+add_subdirectory(mpu6000)
+add_subdirectory(motor)
+add_subdirectory(pid)

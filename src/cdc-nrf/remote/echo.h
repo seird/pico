@@ -4,7 +4,7 @@
 
 #include <pico/stdlib.h>
 
-#include "utils/pin.h"
+#include "utils/pin.hpp"
 
 
 class Echo

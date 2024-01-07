@@ -1,7 +1,7 @@
 add_library(sleep INTERFACE)
 
 target_sources(sleep INTERFACE
-    sleep.cpp
+    sleep.c
 )
 
 target_link_libraries(sleep INTERFACE

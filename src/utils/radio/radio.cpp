@@ -1,8 +1,18 @@
-#include "utils/radio.h"
+#include "utils/radio.hpp"
+#include <stdio.h>
 
 #define CE_PIN 14
 #define CSN_PIN 15
 #define IRQ_PIN 6
+
+
+static void
+print_array(uint8_t * a, size_t size)
+{
+    for (size_t i=0; i<size; ++i)
+        printf("%02x", *(a+i));
+    putchar('\n');
+}
 
 
 Radio::Radio() : RF24(CE_PIN, CSN_PIN) {
@@ -51,6 +61,7 @@ Radio::send_packet(uint8_t * packet)
 {
     stopListening();
     uint8_t packet_size = getPayloadSize();
+    printf("[send]"); print_array(packet, packet_size);
     return write(packet, packet_size);
 }
 
@@ -124,6 +135,7 @@ Radio::receive_packet(uint8_t * packet, uint8_t * pipe)
     if (available(pipe)) {                // is there a payload? get the pipe number that recieved it
         uint8_t bytes = getPayloadSize(); // get the size of the payload
         read(packet, bytes);              // fetch payload from FIFO
+        printf("[rcv (%d)]", *pipe); print_array(packet, bytes);
         return true;
     }
     return false;

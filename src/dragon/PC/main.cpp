@@ -50,17 +50,20 @@ bool radio_init();
 
 Pin pin_LED(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 Radio radio;
-queue_t queue;
+queue_t queue_rx;
+queue_t queue_tx;
 static bool flashLED = false;
 
 const uint8_t address_read_node[6] = ADDRESS_READ;
+const uint8_t writing_address[] = WRITING_ADDRESS;
 
 
 /*------------- MAIN -------------*/
 int main(void)
 {
     board_init();
-    queue_init(&queue, PAYLOAD_SIZE, 100);
+    queue_init(&queue_rx, PAYLOAD_SIZE, 100);
+    queue_init(&queue_tx, PAYLOAD_SIZE, 100);
 
     pin_LED.off();
     while (!radio_init())
@@ -79,11 +82,13 @@ int main(void)
     }
 }
 
+
 bool
 radio_init() {
     if (!radio.setup(PAYLOAD_SIZE))
         return false;
     
+    radio.openWritingPipe(writing_address);
     radio.openReadingPipe(PIPE_READ, address_read_node);
     radio.startListening(); // set the radio in RX mode
     
@@ -94,13 +99,20 @@ radio_init() {
 // Radio core
 void core1(void)
 {
-    uint8_t buffer[PAYLOAD_SIZE];
+    uint8_t buf[PAYLOAD_SIZE];
     uint8_t pipe;
 
     while (true) {
+        // Check if there's a packet to transmit
+        while (queue_try_remove(&queue_tx, buf)) {
+            radio.stopListening();
+            radio.send_packet(buf);
+            radio.startListening();
+        }
+        
         // Check for a new packet
-        if (radio.receive_packet(buffer, &pipe)) {
-            queue_try_add(&queue, buffer);
+        while (radio.receive_packet(buf, &pipe)) {
+            queue_try_add(&queue_rx, buf);
             if (flashLED)
                 pin_LED.blink(1, 5);
         }
@@ -163,12 +175,14 @@ void cdc_task(void)
             default:
                 break;
             }
+        } else if (count == PAYLOAD_SIZE) {
+            queue_try_add(&queue_tx, buf);
         }
     }
 
     // Send data to USB host
     uint8_t data[PAYLOAD_SIZE];
-    if (queue_try_remove(&queue, data)) { // Always remove the data from the queue, even if there is no usb host connected
+    if (queue_try_remove(&queue_rx, data)) { // Always remove the data from the queue, even if there is no usb host connected
         if (tud_cdc_connected()) {
             tud_cdc_write(data, PAYLOAD_SIZE);
             tud_cdc_write_flush();

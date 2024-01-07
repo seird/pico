@@ -3,8 +3,8 @@
 #include <pico/multicore.h>
 #include <pico/util/queue.h>
 
-#include "utils/pin.h"
-#include "utils/radio.h"
+#include "utils/pin.hpp"
+#include "utils/radio.hpp"
 #include "echo.h"
 
 
